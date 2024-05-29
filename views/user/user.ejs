@@ -1,0 +1,197 @@
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h4 class="m-0">
+                        <i class="fas fa-users"></i> အသုံးပြုသူများ
+                    </h4>
+                </div><!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item">အသုံးပြုသူများ</li>
+                        <li class="breadcrumb-item active">
+                            <a href="/users">အသုံးပြုသူများ</a>
+                        </li>
+                    </ol>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+
+            <div class="row mb-2">
+                <div class="col-sm-6">
+
+                </div><!-- /.col -->
+                <div class="col-sm-6 items-right">
+                    <button class="btn btn-sm btn-outline-primary float-right" data-widget="control-sidebar"
+                        data-slide="true">
+                        <i class="fa fa-filter" aria-hidden="true"></i> Filter
+                    </button>
+
+                    <a href="/users/create" class="btn btn-sm btn-outline-primary float-right mr-3">
+                        <i class="fas fa-plus-circle"></i> Add New
+                    </a>
+
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+
+        </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <div class="content">
+        <div class="container-fluid">
+
+            <div class="row">
+                <div class="col-12">
+
+                    <div class="card card-primary card-outline">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-list"></i> User Lists
+                            </h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <table id="datatable" class="table table-bordered table-striped dataTable dtr-inline"
+                                role="grid" aria-describedby="example1_info">
+                                <thead>
+                                    <tr role="row">
+                                        <th>No</th>
+                                        <th>Name</th>
+                                        <th>Phone</th>
+                                        <th>Points</th>
+                                        <th>Expo Push Token</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% users.map((user,index)=> { %>
+                                        <tr class="odd">
+                                            <td>
+                                                <%= index + 1 %>
+                                            </td>
+                                            <td>
+                                                <%= user.name %>
+                                            </td>
+                                            <td>
+                                                <%= user.phone %>
+                                            </td>
+                                            <td>
+                                                <%= user.points %>
+                                            </td>
+                                            <td>
+                                                <%= user.expo_push_token %>
+                                            </td>
+                                            <td>
+                                                <a href="/users/<%= user.id %>">
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
+                                                /
+                                                <a href="/users/<%= user.id %>/edit">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                /
+                                                <a href="#" onclick="destroy(event)">
+                                                    <i class="fas fa-trash text-danger" data-id="<%= user._id %> "></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <% }) %>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <!-- /.col -->
+            </div>
+
+            <!-- Filter -->
+            <aside class="control-sidebar control-sidebar-light">
+                <!-- Control sidebar content goes here -->
+                <div class="row p-3">
+
+                    <div class="col-lg-12 mb-3">
+                        <a href="#" class="mr-3" data-widget="control-sidebar" data-slide="true">
+                            <i class="fa fa-angle-right fa-lg" aria-hidden="true"></i>&nbsp;
+                        </a>
+
+                        <h4 class="d-inline">Filter</h4>
+                    </div>
+
+                    <div class="col-lg-12">
+                        <form action="" method="GET">
+                            <div class="form-group">
+                                <label for="nameInput">Name</label>
+                                <input type="text" name="name" class="form-control" id="nameInput"
+                                    placeholder="Enter name" onkeyup="testFun()">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Email address</label>
+                                <input type="email" name="email" class="form-control" id="exampleInputEmail1"
+                                    placeholder="Enter email">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="phoneInput">Phone</label>
+                                <input type="text" name="phone" class="form-control" id="phoneInput"
+                                    placeholder="Enter phone">
+                            </div>
+
+                            <div class="form-group">
+                                <label>User Type:</label>
+                                <select class="form-control" name="type" id="typeInput">
+                                    <option value="admin">Admin</option>
+                                    <option value="user">User</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <button class="btn btn-sm btn-primary float-right">
+                                    <i class="fa fa-filter" aria-hidden="true"></i> Filter
+                                </button>
+                            </div>
+
+                        </form>
+                    </div>
+
+                </div>
+            </aside>
+            <!-- /.filter -->
+
+        </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content -->
+</div>
+
+<script>
+
+    function destroy(e) {
+        const id = e.target.dataset.id
+        const confirmAction = confirm("ပယ်ဖျက်မှာ သေချာလား ?");
+        const endpoint = `/users/${id}`;
+
+        if (confirmAction) {
+            fetch(endpoint, { method: 'DELETE' })
+                .then((response) => response.json())
+                .then((data) => {
+
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'အောင်မြင်ပါသည်။'
+                    });
+
+                    window.location.href = data.redirect
+                })
+                .catch((err) => {
+                    console.log(err);
+                })
+        }
+
+    }
+
+</script>

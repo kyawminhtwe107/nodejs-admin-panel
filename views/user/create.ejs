@@ -1,0 +1,167 @@
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">User</h1>
+                </div><!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item">Administrator</li>
+                        <li class="breadcrumb-item active">
+                            <a href="/users">Users</a>
+                        </li>
+                        <li class="breadcrumb-item active">
+                            <a href="/users/create">Create</a>
+                        </li>
+                    </ol>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <a href="/users" class="btn btn-md btn-outline-primary" style="border-radius: 40%;">
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    </a>
+                </div><!-- /.col -->
+                <div class="col-sm-6">
+                    
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+            
+        </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <div class="content">
+        <div class="container-fluid">
+
+            <div class="row">
+                <!-- left column -->
+                <div class="col-md-12">
+                    <!-- jquery validation -->
+                    <div class="card card-primary card-outline">
+                        <div class="card-header">
+                            <h5 class="m-0">
+                                <i class="fas fa-plus-circle"></i> Create New
+                            </h5>
+                        </div>
+                        <!-- /.card-header -->
+                        <!-- form start -->
+                        <form action="/users" id="createForm" novalidate="novalidate">
+                            <div class="card-body">
+
+                                <div class="form-group">
+                                    <label for="nameInput">Name</label>
+                                    <input type="text" name="name" class="form-control" id="nameInput" placeholder="Enter name">
+                                    <span class="name error invalid-feedback"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="inputEmail">Email address</label>
+                                    <input type="email" name="email" class="form-control" id="inputEmail"
+                                        placeholder="Enter email">
+                                    <span class="email error invalid-feedback"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="phoneInput">Phone</label>
+                                    <input type="text" name="phone" class="form-control" id="phoneInput" placeholder="Enter phone (+959773728028) ">
+                                    <span class="phone error invalid-feedback"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="typeInput">User Type:</label>
+                                    <select class="form-control" name="type" id="typeInput" >
+                                        <option value="">-- ရွေးပါ --</option>
+                                        <option value="admin">Admin</option>
+                                        <option value="user">User</option>
+                                    </select>
+                                    <span class="type error invalid-feedback"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="passwordInput">Password</label>
+                                    <input type="password" name="password" class="form-control" id="passwordInput"
+                                        placeholder="Password">
+                                    <span class="password error invalid-feedback"></span>
+                                </div>
+
+                            </div>
+                            <!-- /.card-body -->
+                            <div class="card-footer">
+                                <button class="btn btn-primary">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <!--/.col (left) -->
+            </div>
+
+           
+        </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content -->
+</div>
+
+<script src="/js/validator.js"></script>
+<script>
+    
+    const form = document.querySelector('#createForm')
+
+    $('#createForm').on('keyup change keypress',async (e) => {
+        checkValidate(e);
+    });
+
+    $('#createForm').on('submit', async (e) => {
+
+        e.preventDefault();
+
+        $("[name='email']").removeClass('is-invalid');
+        $("[name='name']").removeClass('is-invalid');
+        $("[name='phone']").removeClass('is-invalid');
+        $("[name='password']").removeClass('is-invalid');
+        $("[name='type']").removeClass('is-invalid');
+
+        const name = form.name.value;
+        const email = form.email.value;
+        const phone = form.phone.value;
+        const type = form.type.value;
+        const password = form.password.value;
+        const editMode = false;
+
+        try{
+            const res = await fetch('/users', {
+                method: 'POST',
+                body: JSON.stringify({ name, email, password, phone, type, editMode }),
+                headers: { 'Content-Type': 'application/json' }
+            });
+
+            const data = await res.json();
+
+            if(data.errors){
+                showServerErrors(data.errors);
+            }
+
+            if(data.user){
+                
+                Toast.fire({
+                    icon: 'success',
+                    title: 'အောင်မြင်ပါသည်။'
+                });
+
+                setTimeout(()=>{
+                    window.location.href = "/users"
+                },1500)
+            }
+        }
+        catch(err){
+
+        }
+        
+    });
+    
+</script>

@@ -1,0 +1,133 @@
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">User</h1>
+                </div><!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item">Administrator</li>
+                        <li class="breadcrumb-item active">
+                            <a href="/users">Users</a>
+                        </li>
+                        <li class="breadcrumb-item active">
+                            <a href="/users/create">Create</a>
+                        </li>
+                    </ol>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <a href="/users" class="btn btn-md btn-outline-primary" style="border-radius: 40%;">
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    </a>
+                </div><!-- /.col -->
+                <div class="col-sm-6">
+                    
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+            
+        </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <div class="content">
+        <div class="container-fluid">
+
+            <div class="row">
+                <!-- left column -->
+                <div class="col-md-12">
+                    <!-- jquery validation -->
+                    <div class="card card-primary card-outline">
+                        <div class="card-header">
+                            <h5 class="m-0">
+                                <i class="fas fa-paper-plane"></i> Send Notification
+                            </h5>
+                        </div>
+                        <!-- /.card-header -->
+                        <!-- form start -->
+                        <form action="/users" id="sendNotification" novalidate="novalidate">
+                            <div class="card-body">
+
+                                <div class="form-group">
+                                    <label for="titleInput">Title:</label>
+                                    <input type="text" name="title" class="form-control" id="titleInput" placeholder="Message Title" required min="10" max="100">
+                                    <span class="title error invalid-feedback"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="bodyInput">Name:</label>
+                                    <input type="text" name="body" class="form-control" id="bodyInput" placeholder="Message Body">
+                                    <span class="body error invalid-feedback"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="tokenInput">Expo Push Token:</label>
+                                    <input type="text" name="token" class="form-control" id="tokenInput" placeholder="Enter Expo Push Token">
+                                    <span class="token error invalid-feedback"></span>
+                                </div>
+
+
+                            </div>
+                            <!-- /.card-body -->
+                            <div class="card-footer">
+                                <button class="btn btn-primary">Send Notification</button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <!--/.col (left) -->
+            </div>
+
+           
+        </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content -->
+</div>
+
+<script>
+    
+    const form = document.querySelector('#sendNotification')
+
+    $('#sendNotification').on('submit', async (e) => {
+
+        e.preventDefault();
+
+        const title = form.title.value;
+        const body = form.body.value;
+        const token = form.token.value;
+
+        try{
+            const res = await fetch('/notification', {
+                method: 'POST',
+                body: JSON.stringify({ title, body,token }),
+                headers: { 'Content-Type': 'application/json' }
+            });
+
+            const data = await res.json();
+
+            if(res.status == 200){
+                Toast.fire({
+                    icon: 'success',
+                    title: 'အောင်မြင်ပါသည်။'
+                });
+            }
+            else{
+                Toast.fire({
+                    icon: 'error',
+                    title: 'တစ်စုံတစ်ခု မှားယွင်းနေသည်။'
+                });
+            }
+        }
+        catch(err){
+
+        }
+        
+    });
+    
+</script>

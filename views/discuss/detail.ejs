@@ -1,0 +1,270 @@
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h4 class="m-0">
+                        <i class="fas fa-comments"></i> ဆွေနွေးခြင်း
+                    </h4>
+                </div><!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item">ဆွေနွေးခြင်း</li>
+                        <li class="breadcrumb-item active">
+                            <a href="/discusses">ဆွေနွေးခြင်းများ</a>
+                        </li>
+                        <li class="breadcrumb-item active">
+                            အသေးစိတ်
+                        </li>
+                    </ol>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <a href="/discusses" class="btn btn-md btn-outline-primary" style="border-radius: 40%;">
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    </a>
+                </div><!-- /.col -->
+                <div class="col-sm-6 items-right">
+
+                    <a href="/discusses/create" class="btn btn-sm btn-outline-primary float-right mr-3">
+                        <i class="fas fa-plus-circle"></i> Add New
+                    </a>
+
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+
+        </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <div class="content">
+        <div class="container-fluid">
+
+            <div class="row">
+                <div class="col-12">
+
+                    <div class="card card-primary card-outline">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-list"></i> <%= discuss.title %> 
+                            </h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <div class="row">
+
+                                <div class="col-6">
+
+                                    <div class="row user-panel mb-3">
+                                        <div class="col-1 image pt-2">
+                                            <img src="/img/profile.png" class="img-circle elevation" alt="User Image">
+                                        </div>
+                                        <div class="col-11 info">
+                                            <a href="#" class="d-block"><%= discuss.name %> </a>
+                                            <small><%= createDate %> </small>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <h5><b>
+                                                    <%= discuss.title %>
+                                                </b></h5>
+                                            <p>
+                                                <%- discuss.description %>
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div class="row border-top my-5 pt-2">
+                                        <div class="col-4">
+                                            <i class="fas fa-star"></i> <%= discuss.likes %>
+                                        </div>
+                                        <div class="col-4">
+                                            <i class="fas fa-comments" data-toggle="modal" data-target="#formModal"></i> <%= comments.length %> 
+                                        </div>
+                                        <div class="col-4">
+                                            <i class="fas fa-eye"></i> <%= discuss.views %> 
+                                        </div>
+                                    </div>
+
+                                    <% comments.map((comment,index)=> { %>
+                                        <% if(comment.comment_id===0) { %>
+                                            <div class="row py-2 bg-light rounded mb-2">
+                                                <div class="col-1"></div>
+                                                <div class="col-11">
+                                                    <small>
+                                                        <%= comment.name %>
+                                                    </small>
+                                                    <p>
+                                                        <%= comment.comment %>
+                                                    </p>
+                                                    <div class="text-left" style="font-size: 12px;">
+                                                        <a href="#" class="mr-5 text-gray" onclick="modalOpen(event)">
+                                                            <i class="fas fa-reply" data-comment="<%= JSON.stringify(comment) %>" data-reply="reply"></i>
+                                                        </a>
+                                                        <a href="#" class="mr-5 text-gray" onclick="modalOpen(event)">
+                                                            <i class="fas fa-edit" data-comment="<%= JSON.stringify(comment) %>" data-reply="noreply"></i>
+                                                        </a>
+                                                        <a href="#" class="mr-5 text-gray" onclick="destroy(event)">
+                                                            <i class="fas fa-trash" data-id="<%= comment.id %> "></i>
+                                                        </a>
+                                                    </div>
+
+                                                    <!-- for comment reply -->
+                                                    <% comments.map((child,index) => { %> 
+                                                        <% if(child.comment_id === comment.id){ %>
+                                                            <div class="row border my-2">
+                                                                <div class="col-2">
+
+                                                                </div>
+                                                                <div class="col-10">
+                                                                    <small>
+                                                                        <%= child.name %>
+                                                                    </small>
+                                                                    <p>
+                                                                        <%= child.comment %>
+                                                                    </p>
+
+                                                                    <div class="text-left" style="font-size: 12px;">
+                                                                        <a href="#" class="mr-5 text-gray" onclick="modalOpen(event)">
+                                                                            <i class="fas fa-reply" data-comment="<%= JSON.stringify(comment) %>" data-reply="reply"></i>
+                                                                        </a>
+                                                                        <a href="#" class="mr-5 text-gray" onclick="modalOpen(event)">
+                                                                            <i class="fas fa-edit" data-comment="<%= JSON.stringify(child) %>" data-reply="noreply"></i>
+                                                                        </a>
+                                                                        <a href="#" class="mr-5 text-gray" onclick="destroy(event)">
+                                                                            <i class="fas fa-trash" data-id="<%= child.id %> "></i>
+                                                                        </a>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                        <% } %> 
+                                                    <%}) %> 
+
+                                                    <!-- /end comment reply -->
+                                                    
+                                                </div>
+                                            </div>
+                                        <% } %>
+                                    <% }) %>
+                                </div>
+
+                                <div class="col-6" id="comment">
+                                    
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <!-- /.col -->
+            </div>
+
+            <!-- form modal -->
+            <div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Comment</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="commentForm">
+                                <div class="form-group">
+                                    <label for="comment" class="col-form-label">Comment:</label>
+                                    <textarea class="form-control" name="comment" id="comment" rows="7"></textarea>
+                                </div>
+
+                                <div class="form-group text-right">
+                                    <button type="button" onclick="commentUploadForm(event)" class="btn btn-primary">Save</button>
+                                </div>
+                                
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content -->
+</div>
+
+<script>
+
+    let form = document.querySelector('#commentForm');
+    let id = 0;
+    let comment_id = 0;
+    let user_id = 2;
+    let discuss_id = 0;
+    let isReply = false;
+
+    let discussDetail = '<%- JSON.stringify(discuss) %>';
+
+    function modalOpen(e) {
+        const comment = JSON.parse(e.target.dataset.comment);
+        const reply = e.target.dataset.reply;
+
+        $('#formModal').modal('show');
+
+        comment_id = comment.id
+        user_id = comment.user_id
+
+        if (reply === 'reply') {
+            isReply = true;
+        }
+        else {
+            id = comment.id
+            form.comment.value = comment.comment
+        }
+    }
+
+    async function commentUploadForm (){
+        
+        const params = {
+            id,
+            user_id,
+            comment_id,
+            discuss_id: JSON.parse(discussDetail).id,
+            comment: form.comment.value
+        };
+
+        let endpoint = '/comments';
+        let method = 'POST';
+
+        if (id !== 0) {
+            endpoint += '/' + id
+            method = 'PUT'
+        }
+
+        const res = await fetch(endpoint, {
+            method: method,
+            body: JSON.stringify(params),
+            headers: { 'Content-Type': 'application/json' }
+        });
+
+        const data = await res.json();
+
+        if (data.status == 'ok') {
+            Toast.fire({
+                icon: 'success',
+                title: 'အောင်မြင်ပါသည်။'
+            });
+            $('#formModel').modal('hide');
+
+            window.location.reload()
+        }
+    }
+
+</script>

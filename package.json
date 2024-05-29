@@ -1,0 +1,31 @@
+{
+  "name": "notification.henshinjlc.com",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.26.0",
+    "body-parser": "^1.19.2",
+    "cookie-parser": "^1.4.6",
+    "db-migrate": "^0.11.13",
+    "dotenv": "^16.0.0",
+    "ejs": "^3.1.6",
+    "expo-server-sdk": "^3.6.0",
+    "express": "^4.17.3",
+    "express-ejs-layouts": "^2.5.1",
+    "express-session": "^1.17.2",
+    "moment": "^2.29.1",
+    "mysql": "^2.18.1",
+    "mysql2": "^2.3.3",
+    "node-cron": "^3.0.0",
+    "nodemon": "^2.0.15",
+    "passport": "^0.5.2",
+    "path": "^0.12.7"
+  }
+}
